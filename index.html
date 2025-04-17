@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gold Shop Queue</title>
+  <style>
+    body { font-family: Arial, sans-serif; text-align: center; padding: 30px; }
+    button { font-size: 20px; padding: 10px 20px; margin-top: 20px; }
+    #yourNumber, #nowServing { font-size: 24px; margin-top: 20px; }
+    .admin-controls { margin-top: 40px; border-top: 1px solid #ccc; padding-top: 20px; }
+  </style>
+</head>
+<body>
+  <h1>🎉 Welcome to Our Gold Shop!</h1>
+  <p>Tap below to get your queue number:</p>
+  <button onclick="getQueueNumber()">🎟️ Get Queue Number</button>
+  <div id="yourNumber"></div>
+  <div id="nowServing"></div>
+
+  <div class="admin-controls">
+    <h2>🧑‍💼 Staff Control Panel</h2>
+    <button onclick="nextNumber()">➡️ Call Next</button>
+    <p>Now Serving: <span id="nowServingDisplay">0</span></p>
+  </div>
+
+  <script>
+    let currentQueue = parseInt(localStorage.getItem('currentQueue') || '0');
+    let nowServing = parseInt(localStorage.getItem('nowServing') || '0');
+
+    function getQueueNumber() {
+      currentQueue++;
+      localStorage.setItem('currentQueue', currentQueue);
+      localStorage.setItem('myQueue', currentQueue);
+      document.getElementById('yourNumber').innerText = `Your Queue Number: ${currentQueue}`;
+      updateNowServing();
+    }
+
+    function nextNumber() {
+      if (nowServing < currentQueue) {
+        nowServing++;
+        localStorage.setItem('nowServing', nowServing);
+        updateNowServing();
+      }
+    }
+
+    function updateNowServing() {
+      document.getElementById('nowServing').innerText = `🔔 Now Serving: ${localStorage.getItem('nowServing')}`;
+      document.getElementById('nowServingDisplay').innerText = localStorage.getItem('nowServing');
+    }
+
+    window.onload = () => {
+      updateNowServing();
+      const myNumber = localStorage.getItem('myQueue');
+      if (myNumber) {
+        document.getElementById('yourNumber').innerText = `Your Queue Number: ${myNumber}`;
+      }
+    }
+  </script>
+</body>
+</html>
